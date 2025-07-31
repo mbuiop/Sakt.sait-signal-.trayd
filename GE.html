@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش کامل GitHub Pages - راهنمای فارسی</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 5px solid #3498db;
+        }
+        .step-card {
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+            border: none;
+            overflow: hidden;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: -25px auto 20px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .highlight-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 15px 0;
+        }
+        .important-note {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 20px 0;
+        }
+        .link-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 20px 0;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        .screenshot {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
+        }
+        .btn-action {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin: 5px;
+            display: inline-block;
+        }
+        .btn-success-step {
+            background: #2ecc71;
+        }
+        .btn-warning-step {
+            background: #f39c12;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .step-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 20px;
+        }
+        .troubleshooting {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- هدر صفحه -->
+    <header class="header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">آموزش کامل آپلود فایل روی GitHub Pages</h1>
+            <p class="lead">راهنمای گام به گام فارسی برای انتشار سایت رایگان با دامنه اختصاصی</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- معرفی -->
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="link-box">
+                    <h4>لینک نهایی سایت شما به این شکل خواهد بود:</h4>
+                    <p class="display-6 fw-bold">https://<span class="text-danger">username</span>.github.io</p>
+                    <p class="text-muted">(به جای username، نام کاربری GitHub خود را وارد کنید)</p>
+                </div>
+                <p class="mt-4">با دنبال کردن این مراحل ساده، می‌توانید فایل‌های HTML خود را روی GitHub Pages منتشر کنید و یک سایت رایگان با دامنه شخصی داشته باشید.</p>
+            </div>
+        </div>
+
+        <!-- مرحله 1 -->
+        <div class="step-card card">
+            <div class="step-number">1</div>
+            <div class="card-body">
+                <h2 class="step-title">ایجاد ریپازیتوری جدید در GitHub</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol>
+                            <li>وارد حساب <a href="https://github.com" target="_blank" class="fw-bold">GitHub</a> خود شوید</li>
+                            <li>روی دکمه <span class="btn-action">+</span> (بالای سمت راست) کلیک کنید</li>
+                            <li>گزینه <span class="btn-action">New repository</span> را انتخاب کنید</li>
+                            <li>در بخش نام ریپازیتوری، <span class="text-danger fw-bold">حتماً</span> نام را به این فرمت وارد کنید:
+                                <div class="code-block mt-2">username.github.io</div>
+                                <p>به جای <span class="text-danger">username</span>، نام کاربری GitHub خود را وارد کنید</p>
+                            </li>
+                            <li>گزینه <span class="fw-bold">Public</span> را انتخاب کنید</li>
+                            <li>تیک <span class="fw-bold">Add a README file</span> را بزنید (اختیاری)</li>
+                            <li>روی دکمه <span class="btn-action btn-success-step">Create repository</span> کلیک کنید</li>
+                        </ol>
+                        
+                        <div class="important-note">
+                            <h5>📌 نکته حیاتی:</h5>
+                            <p class="mb-0">نام ریپازیتوری <span class="fw-bold text-danger">حتماً</span> باید به فرمت username.github.io باشد (با حروف کوچک)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.imgur.com/XeP0wJd.png" alt="ایجاد ریپازیتوری جدید" class="screenshot img-fluid">
+                        <p class="text-center text-muted mt-2">صفحه ایجاد ریپازیتوری جدید در GitHub</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مرحله 2 -->
+        <div class="step-card card">
+            <div class="step-number">2</div>
+            <div class="card-body">
+                <h2 class="step-title">آپلود فایل index.html</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol>
+                            <li>در ریپازیتوری جدید، روی دکمه <span class="btn-action">Add file</span> کلیک کنید</li>
+                            <li>از منوی باز شده گزینه <span class="btn-action">Upload files</span> را انتخاب کنید</li>
+                            <li>فایل‌های خود (مخصوصاً <span class="fw-bold">index.html</span>) را به کادر Drag & drop بکشید یا روی <span class="btn-action">choose your files</span> کلیک کنید</li>
+                            <li>پس از آپلود فایل‌ها، به پایین صفحه بروید</li>
+                            <li>در بخش <span class="fw-bold">Commit changes</span>:
+                                <ul>
+                                    <li>عنوانی مانند <span class="fw-bold">Add index.html</span> بنویسید</li>
+                                    <li>گزینه <span class="fw-bold">Commit directly to the main branch</span> را انتخاب کنید</li>
+                                </ul>
+                            </li>
+                            <li>روی دکمه <span class="btn-action btn-success-step">Commit changes</span> کلیک کنید</li>
+                        </ol>
+                        
+                        <div class="important-note">
+                            <h5>📌 نکته مهم:</h5>
+                            <p class="mb-0">فایل اصلی سایت شما <span class="fw-bold">حتماً</span> باید index.html نام داشته باشد و در <span class="fw-bold">شاخه اصلی (root)</span> ریپازیتوری باشد</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.imgur.com/5XJzZkG.png" alt="آپلود فایل‌ها در GitHub" class="screenshot img-fluid">
+                        <p class="text-center text-muted mt-2">صفحه آپلود فایل‌ها در ریپازیتوری GitHub</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مرحله 3 -->
+        <div class="step-card card">
+            <div class="step-number">3</div>
+            <div class="card-body">
+                <h2 class="step-title">فعال‌سازی GitHub Pages</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol>
+                            <li>در ریپازیتوری خود، به تب <span class="fw-bold">Settings</span> بروید</li>
+                            <li>در منوی سمت چپ، روی گزینه <span class="fw-bold">Pages</span> کلیک کنید</li>
+                            <li>در بخش <span class="fw-bold">Build and deployment</span> → <span class="fw-bold">Source</span>:
+                                <ul>
+                                    <li>منوی کشویی را باز کنید و <span class="fw-bold">Deploy from a branch</span> را انتخاب کنید</li>
+                                    <li>در بخش <span class="fw-bold">Branch</span>، شاخه <span class="fw-bold">main</span> را انتخاب کنید</li>
+                                    <li>در بخش فولدر، گزینه <span class="fw-bold">/(root)</span> را انتخاب کنید</li>
+                                </ul>
+                            </li>
+                            <li>روی دکمه <span class="btn-action btn-success-step">Save</span> کلیک کنید</li>
+                        </ol>
+                        
+                        <div class="highlight-box">
+                            <h5>⏱ زمان انتظار:</h5>
+                            <p class="mb-0">پس از ذخیره تنظیمات، ۱-۲ دقیقه صبر کنید تا سایت شما آماده شود</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.imgur.com/2kXW3re.png" alt="تنظیمات GitHub Pages" class="screenshot img-fluid">
+                        <p class="text-center text-muted mt-2">صفحه تنظیمات GitHub Pages</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مرحله 4 -->
+        <div class="step-card card">
+            <div class="step-number">4</div>
+            <div class="card-body">
+                <h2 class="step-title">دریافت لینک سایت</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol>
+                            <li>در همان بخش <span class="fw-bold">Settings > Pages</span> بمانید</li>
+                            <li>پس از ۱-۲ دقیقه، یک باکس سبز رنگ ظاهر می‌شود</li>
+                            <li>لینک سایت شما در این باکس نمایش داده می‌شود:
+                                <div class="code-block mt-2">https://username.github.io</div>
+                            </li>
+                            <li>روی این لینک کلیک کنید یا آن را در مرورگر خود کپی کنید</li>
+                        </ol>
+                        
+                        <div class="link-box">
+                            <h5>🌐 لینک نهایی سایت شما:</h5>
+                            <p class="display-6 fw-bold">https://<span class="text-danger">username</span>.github.io</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.imgur.com/na5OLu1.png" alt="لینک سایت در GitHub Pages" class="screenshot img-fluid">
+                        <p class="text-center text-muted mt-2">باکس سبز رنگ حاوی لینک سایت</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مرحله 5 -->
+        <div class="step-card card">
+            <div class="step-number">5</div>
+            <div class="card-body">
+                <h2 class="step-title">رفرش GitHub Pages در صورت مشکل</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>اگر سایت شما نمایش داده نمی‌شود (خطای 404) یا لینک ظاهر نشد:</p>
+                        <ol>
+                            <li>به <span class="fw-bold">Settings > Pages</span> برگردید</li>
+                            <li>گزینه <span class="fw-bold">Source</span> را به <span class="fw-bold">None</span> تغییر دهید</li>
+                            <li>روی دکمه <span class="btn-action">Save</span> کلیک کنید</li>
+                            <li>صبر کنید تا ذخیره شود</li>
+                            <li>دوباره <span class="fw-bold">Source</span> را به <span class="fw-bold">main</span> و <span class="fw-bold">/(root)</span> تغییر دهید</li>
+                            <li>دوباره روی دکمه <span class="btn-action">Save</span> کلیک کنید</li>
+                            <li>۵ دقیقه صبر کنید و صفحه را رفرش کنید (F5)</li>
+                        </ol>
+                        
+                        <div class="troubleshooting">
+                            <h5>🔧 عیب‌یابی مشکلات رایج:</h5>
+                            <ul>
+                                <li>نام ریپازیتوری حتماً باید username.github.io باشد</li>
+                                <li>فایل index.html باید در شاخه اصلی باشد (نه داخل پوشه دیگر)</li>
+                                <li>در تنظیمات Pages، branch را روی main و folder را روی /(root) قرار دهید</li>
+                                <li>پس از هر تغییر ۱-۲ دقیقه صبر کنید</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.imgur.com/8B7q9v0.png" alt="رفرش GitHub Pages" class="screenshot img-fluid">
+                        <p class="text-center text-muted mt-2">صفحه تنظیمات برای رفرش GitHub Pages</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- خلاصه مراحل -->
+        <div class="row mt-5 mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">خلاصه مراحل</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">1. ساخت ریپازیتوری با نام <span class="fw-bold">username.github.io</span></li>
+                            <li class="list-group-item">2. آپلود فایل index.html در شاخه اصلی (root)</li>
+                            <li class="list-group-item">3. رفتن به Settings > Pages</li>
+                            <li class="list-group-item">4. انتخاب branch: main و folder: /(root)</li>
+                            <li class="list-group-item">5. ذخیره تنظیمات و ۲ دقیقه انتظار</li>
+                            <li class="list-group-item">6. دریافت لینک از باکس سبز رنگ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فوتر -->
+    <footer class="footer text-center">
+        <div class="container">
+            <h3>آموزش GitHub Pages - راهنمای فارسی</h3>
+            <p>با این مراحل ساده می‌توانید سایت استاتیک خود را به صورت رایگان روی GitHub Pages منتشر کنید</p>
+            <p>هرگونه سوال یا مشکل دارید، از بخش Issues در GitHub کمک بگیرید</p>
+            <p class="mt-4">© 2023 - آموزش‌های برنامه‌نویسی</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

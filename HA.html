@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کانال فایل های سایت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border-radius: 3px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+        }
+        
+        .channel-card {
+            border-top: 5px solid #2575fc;
+        }
+        
+        .contact-card {
+            border-top: 5px solid #6a11cb;
+        }
+        
+        p {
+            color: #34495e;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+        }
+        
+        .btn i {
+            margin-left: 10px;
+        }
+        
+        .telegram-id {
+            display: inline-block;
+            background: linear-gradient(to right, #0088cc, #34b7f1);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            direction: ltr;
+            margin-top: 10px;
+        }
+        
+        .telegram-id i {
+            margin-right: 10px;
+        }
+        
+        .logo {
+            font-size: 50px;
+            color: #0088cc;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fab fa-telegram"></i>
+        </div>
+        <h1>فایل های آماده سایت و ربات تلگرام</h1>
+        
+        <div class="card channel-card">
+            <p>اگر فایل های ساخت سایت آماده می خواهید وارد کانال ما شوید:</p>
+            <a href="https://t.me/saiteeefayl" class="btn" target="_blank">
+                <i class="fab fa-telegram"></i> عضویت در کانال
+            </a>
+        </div>
+        
+        <div class="card contact-card">
+            <p>برای سفارشی سازی سایت، ساخت ربات تلگرام و نحوه اجرا:</p>
+            <div class="telegram-id">
+                <i class="fab fa-telegram"></i> @Mortzayar
+            </div>
+        </div>
+    </div>
+</body>
+</html>

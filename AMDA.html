@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کانال آموزشی فایل‌ها - HTML و پایتون</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .telegram-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #0088cc, #229ed9);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .telegram-icon::before {
+            content: "✈";
+            color: white;
+            font-size: 40px;
+            transform: rotate(-45deg);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h2 {
+            color: #0088cc;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .description {
+            color: #555;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 35px;
+            padding: 0 20px;
+        }
+
+        .features {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: right;
+        }
+
+        .features h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .features ul {
+            list-style: none;
+            color: #666;
+        }
+
+        .features li {
+            padding: 8px 0;
+            font-size: 1.1rem;
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .features li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .join-button {
+            background: linear-gradient(45deg, #0088cc, #229ed9);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3);
+            margin-top: 20px;
+        }
+
+        .join-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 136, 204, 0.4);
+            background: linear-gradient(45deg, #229ed9, #0088cc);
+        }
+
+        .warning {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .warning strong {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .description {
+                font-size: 1.1rem;
+                padding: 0 10px;
+            }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element" style="left: 10%; animation-delay: 0s; font-size: 30px;">💻</div>
+        <div class="floating-element" style="left: 20%; animation-delay: 5s; font-size: 25px;">🐍</div>
+        <div class="floating-element" style="left: 70%; animation-delay: 2s; font-size: 35px;">📁</div>
+        <div class="floating-element" style="left: 80%; animation-delay: 8s; font-size: 28px;">📚</div>
+        <div class="floating-element" style="left: 50%; animation-delay: 12s; font-size: 32px;">⚡</div>
+    </div>
+
+    <div class="container">
+        <div class="telegram-icon"></div>
+        
+        <h1>کانال آموزشی فایل‌ها</h1>
+        <h2>HTML و پایتون</h2>
+        
+        <p class="description">
+            به کانال ما بپیوندید و از مجموعه‌ای غنی از فایل‌های آموزشی HTML و پایتون بهره‌مند شوید!
+        </p>
+
+        <div class="features">
+            <h3>آنچه در کانال ما خواهید یافت:</h3>
+            <ul>
+                <li>فایل‌های HTML کاربردی و حرفه‌ای</li>
+                <li>کدهای پایتون آموزشی</li>
+                <li>پروژه‌های عملی قابل اجرا</li>
+                <li>نمونه کدهای بهینه و تمیز</li>
+                <li>راهنمای گام به گام</li>
+                <li>به‌روزرسانی‌های منظم</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>توجه:</strong> تمام فایل‌های ارائه شده کاملاً تست شده و قابل اجرا هستند. فقط دانلود کنید و از آن‌ها استفاده نمایید!
+        </div>
+
+        <a href="https://t.me/faylllr" class="join-button" target="_blank">
+            🚀 عضویت در کانال تلگرام
+        </a>
+
+        <p style="margin-top: 30px; color: #888; font-size: 0.95rem;">
+            با عضویت در کانال، به جمع هزاران برنامه‌نویس علاقه‌مند بپیوندید!
+        </p>
+    </div>
+
+    <script>
+        // اضافه کردن انیمیشن به دکمه
+        document.querySelector('.join-button').addEventListener('click', function(e) {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-3px)';
+            }, 150);
+        });
+
+        // ایجاد افکت‌های بصری اضافی
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.position = 'fixed';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.width = '4px';
+            sparkle.style.height = '4px';
+            sparkle.style.backgroundColor = '#fff';
+            sparkle.style.borderRadius = '50%';
+            sparkle.style.pointerEvents = 'none';
+            sparkle.style.animation = 'sparkle 1s ease-out forwards';
+            sparkle.style.zIndex = '1000';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        }
+
+        // اضافه کردن استایل انیمیشن sparkle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0% {
+                    opacity: 1;
+                    transform: scale(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ایجاد sparkle هر 3 ثانیه
+        setInterval(createSparkle, 3000);
+    </script>
+</body>
+</html>

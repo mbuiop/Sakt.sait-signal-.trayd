@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش GitHub و اجرای کد پایتون در Termux</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #f0f4f8;
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .platform-tabs {
+            display: flex;
+            background: linear-gradient(90deg, #0f4c75, #3282b8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 18px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab:last-child {
+            border-right: none;
+        }
+        
+        .tab.active {
+            background: rgba(67, 206, 162, 0.3);
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab i {
+            margin-left: 8px;
+        }
+        
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 85%;
+            padding: 15px;
+            border-radius: 15px;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .assistant {
+            background: rgba(67, 206, 162, 0.15);
+            border: 1px solid rgba(67, 206, 162, 0.3);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+            margin-right: 40px;
+        }
+        
+        .assistant::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -10px;
+            border: 10px solid transparent;
+            border-top-color: rgba(67, 206, 162, 0.15);
+            border-right: 0;
+        }
+        
+        .user {
+            background: rgba(56, 103, 214, 0.15);
+            border: 1px solid rgba(56, 103, 214, 0.3);
+            align-self: flex-end;
+            border-top-right-radius: 0;
+            margin-left: 40px;
+        }
+        
+        .user::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -10px;
+            border: 10px solid transparent;
+            border-top-color: rgba(56, 103, 214, 0.15);
+            border-left: 0;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .message-header i {
+            font-size: 1.2rem;
+        }
+        
+        .assistant .message-header i {
+            color: #43cea2;
+        }
+        
+        .user .message-header i {
+            color: #3867d6;
+        }
+        
+        .message-content {
+            line-height: 1.7;
+        }
+        
+        .message-content code {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin: 3px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(67, 206, 162, 0.3), transparent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 3px solid #43cea2;
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #43cea2;
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #3867d6;
+        }
+        
+        .instructions li {
+            margin: 10px 0;
+            padding-left: 10px;
+            position: relative;
+        }
+        
+        .instructions li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #43cea2;
+        }
+        
+        .chat-input {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input input:focus {
+            outline: none;
+            border-color: #43cea2;
+            box-shadow: 0 0 0 3px rgba(67, 206, 162, 0.2);
+        }
+        
+        .chat-input button {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .quick-reply {
+            background: rgba(56, 103, 214, 0.2);
+            border: 1px solid rgba(56, 103, 214, 0.4);
+            color: #a0b9c8;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .quick-reply:hover {
+            background: rgba(56, 103, 214, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .copyable {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            position: relative;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(67, 206, 162, 0.3);
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .tab {
+                padding: 15px 0;
+                font-size: 0.95rem;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .assistant {
+                margin-right: 20px;
+            }
+            
+            .user {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="platform-tabs">
+            <div class="tab active" id="githubTab" onclick="switchTab('github')">
+                <i class="fab fa-github"></i> GitHub
+            </div>
+            <div class="tab" id="termuxTab" onclick="switchTab('termux')">
+                <i class="fas fa-terminal"></i> Termux
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chatContainer">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="پیام خود را اینجا بنویسید...">
+            <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Chat functionality
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const githubTab = document.getElementById('githubTab');
+        const termuxTab = document.getElementById('termuxTab');
+        
+        // Current platform and step
+        let currentPlatform = 'github';
+        let currentStep = 0;
+        
+        // Initial message based on platform
+        function initializeChat() {
+            chatContainer.innerHTML = '';
+            
+            if (currentPlatform === 'github') {
+                addMessage("من بلد نیستم از قیت هاپ استفاده کنم و فایل آپلود کنم ترمینال باز کنم و کدو کجا بنویسم", true);
+                setTimeout(() => {
+                    showStep(1);
+                }, 1000);
+            } else {
+                addMessage("چه جوری داخل ترموکس فایل خودم. اجراع کنم", true);
+                setTimeout(() => {
+                    showStep(1);
+                }, 1000);
+            }
+        }
+        
+        // Switch between platforms
+        function switchTab(platform) {
+            currentPlatform = platform;
+            githubTab.classList.toggle('active', platform === 'github');
+            termuxTab.classList.toggle('active', platform === 'termux');
+            currentStep = 0;
+            initializeChat();
+        }
+        
+        // Initialize chat on load
+        initializeChat();
+        
+        // Function to add a message to the chat
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">
+                    <i class="fas ${isUser ? 'fa-user' : 'fa-robot'}"></i>
+                    <strong>${isUser ? 'شما' : 'دستیار آموزشی'}</strong>
+                </div>
+                <div class="message-content">
+                    ${content}
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        // Function to show a step
+        function showStep(step) {
+            currentStep = step;
+            
+            if (currentPlatform === 'github') {
+                showGitHubStep(step);
+            } else {
+                showTermuxStep(step);
+            }
+        }
+        
+        // GitHub steps
+        function showGitHubStep(step) {
+            switch(step) {
+                case 1:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">1</div>
+                            <div class="step-title">ثبت نام در GitHub</div>
+                        </div>
+                        <p>برای شروع باید در GitHub ثبت نام کنید:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>وارد سایت <a href="https://github.com" target="_blank" style="color: #43cea2; text-decoration: none;">github.com</a> شوید</li>
+                                <li>روی دکمه <span class="highlight">Sign up</span> در بالا سمت راست کلیک کنید</li>
+                                <li>ایمیل، نام کاربری و رمز عبور خود را وارد کنید</li>
+                                <li>روی دکمه <span class="highlight">Create account</span> کلیک کنید</li>
+                                <li>ایمیل خود را تایید کنید (یک ایمیل از GitHub دریافت خواهید کرد)</li>
+                            </ol>
+                        </div>
+                        
+                        <p>بعد از ثبت نام، به من پیام دهید: <span class="highlight">ثبت نام کردم</span></p>
+                    `);
+                    break;
+                    
+                case 2:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">2</div>
+                            <div class="step-title">ساخت مخزن و آپلود فایل</div>
+                        </div>
+                        <p>حالا که ثبت نام کردید، مخزن بسازید و فایل‌هایتان را آپلود کنید:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>بعد از ورود، روی آیکون <span class="highlight">+</span> در بالا سمت راست کلیک کنید</li>
+                                <li>گزینه <span class="highlight">New repository</span> را انتخاب کنید</li>
+                                <li>برای مخزن خود یک نام انتخاب کنید (مثلاً <code>my-project</code>)</li>
+                                <li>تیک گزینه <span class="highlight">Add a README file</span> را بزنید</li>
+                                <li>روی دکمه <span class="highlight">Create repository</span> کلیک کنید</li>
+                                <li>در صفحه مخزن، روی دکمه <span class="highlight">Add file</span> کلیک کنید</li>
+                                <li>گزینه <span class="highlight">Upload files</span> را انتخاب کنید</li>
+                                <li>فایل‌های خود را بکشید و در ناحیه مشخص شده رها کنید</li>
+                                <li>در پایین صفحه، روی دکمه <span class="highlight">Commit changes</span> کلیک کنید</li>
+                            </ol>
+                        </div>
+                        
+                        <p>بعد از آپلود فایل‌ها، به من پیام دهید: <span class="highlight">آپلود کردم</span></p>
+                    `);
+                    break;
+                    
+                case 3:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">3</div>
+                            <div class="step-title">باز کردن فضای کد و پیدا کردن فایل</div>
+                        </div>
+                        <p>حالا برای ویرایش و اجرای کد، فضای کد GitHub را باز کنید:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>در صفحه مخزن خود، دکمه <span class="highlight">.</span> (نقطه) را روی صفحه کلید فشار دهید</li>
+                                <li>یا به جای آدرس مرورگر، بعد از آدرس مخزن، عبارت <span class="highlight">.dev</span> را اضافه کنید</li>
+                                <li>صبر کنید تا فضای کد GitHub بارگذاری شود</li>
+                                <li>در سمت چپ صفحه، روی آیکون <span class="highlight">Explorer</span> (شکل پوشه) کلیک کنید</li>
+                                <li>در بالای بخش Explorer روی آیکون جستجو (ذره‌بین) کلیک کنید</li>
+                                <li>نام فایل مورد نظر خود را تایپ کنید</li>
+                                <li>وقتی فایل در لیست ظاهر شد، روی آن کلیک کنید</li>
+                            </ol>
+                        </div>
+                        
+                        <p>بعد از باز کردن فایل، به من پیام دهید: <span class="highlight">فایل را پیدا کردم</span></p>
+                    `);
+                    break;
+                    
+                case 4:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">4</div>
+                            <div class="step-title">اجرای کد در ترمینال</div>
+                        </div>
+                        <p>حالا برای اجرای کد خود:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>از منوی بالای صفحه روی <span class="highlight">Terminal</span> کلیک کنید</li>
+                                <li>گزینه <span class="highlight">New Terminal</span> را انتخاب کنید</li>
+                                <li>ترمینال در پایین صفحه ظاهر می‌شود</li>
+                                <li>اگر کد شما نیاز به نصب کتابخانه دارد، دستور نصب را وارد کنید. مثلاً:
+                                    <code>pip install numpy pandas</code>
+                                </li>
+                                <li>بعد از نصب کتابخانه‌ها، کد خود را اجرا کنید. مثلاً:
+                                    <code>python main.py</code>
+                                </li>
+                                <li>خروجی برنامه در ترمینال نمایش داده می‌شود</li>
+                            </ol>
+                        </div>
+                        
+                        <p>تبریک! شما با موفقیت یاد گرفتید چگونه از GitHub استفاده کنید، فایل آپلود کنید و کد اجرا کنید.</p>
+                        <p>هر زمان نیاز به کمک داشتید، دوباره به این آموزش مراجعه کنید.</p>
+                    `);
+                    break;
+            }
+        }
+        
+        // Termux steps
+        function showTermuxStep(step) {
+            switch(step) {
+                case 1:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">1</div>
+                            <div class="step-title">دسترسی به حافظه و نصب پایتون</div>
+                        </div>
+                        <p>اول باید به حافظه گوشی دسترسی بگیرید و پایتون را نصب کنید:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>دستور زیر را در Termux اجرا کنید تا به حافظه گوشی دسترسی پیدا کنید:</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('termux-setup-storage')">کپی</button>
+                            <code>termux-setup-storage</code>
+                        </div>
+                        
+                        <p>سپس پکیج‌های لازم را نصب کنید:</p>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('pkg update && pkg upgrade -y && pkg install python -y')">کپی</button>
+                            <code>pkg update && pkg upgrade -y && pkg install python -y</code>
+                        </div>
+                        
+                        <p>بعد از نصب، به من پیام دهید: <span class="highlight">نصب کردم و دسترسی دادم</span></p>
+                    `);
+                    break;
+                    
+                case 2:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">2</div>
+                            <div class="step-title">دسترسی به پوشه و اجرای فایل</div>
+                        </div>
+                        <p>حالا فایل خود را در پوشه دانلودها ذخیره کنید:</p>
+                        
+                        <div class="instructions">
+                            <ol>
+                                <li>فایل پایتون خود را (مثلاً main.py) در پوشه دانلودها ذخیره کنید</li>
+                                <li>حالا با دستور زیر به پوشه دانلودها بروید:</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('cd /sdcard/Download')">کپی</button>
+                            <code>cd /sdcard/Download</code>
+                        </div>
+                        
+                        <p>بعد از انجام این کار، به من پیام دهید: <span class="highlight">انجام دادم</span></p>
+                    `);
+                    break;
+                    
+                case 3:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">3</div>
+                            <div class="step-title">مطمئن شوید فایل وجود دارد</div>
+                        </div>
+                        <p>حالا بررسی کنید که فایل شما در پوشه وجود دارد:</p>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('ls')">کپی</button>
+                            <code>ls</code>
+                        </div>
+                        
+                        <p>اگر فایل شما در لیست نمایش داده شد (مثلاً main.py)، می‌توانید ادامه دهید</p>
+                        
+                        <p>اگر کتابخانه خاصی نیاز دارید، ابتدا آن را نصب کنید:</p>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('pip install numpy pandas matplotlib requests')">کپی</button>
+                            <code>pip install نام_کتابخانه</code>
+                        </div>
+                        
+                        <p>بعد از نصب کتابخانه‌ها، به من پیام دهید: <span class="highlight">کتابخانه‌ها را نصب کردم</span></p>
+                    `);
+                    break;
+                    
+                case 4:
+                    addMessage(`
+                        <div class="step-indicator">
+                            <div class="step-number">4</div>
+                            <div class="step-title">اجرای کد پایتون</div>
+                        </div>
+                        <p>حالا فایل پایتون خود را اجرا کنید:</p>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('python main.py')">کپی</button>
+                            <code>python نام_فایل.py</code>
+                        </div>
+                        
+                        <p>مثال:</p>
+                        
+                        <div class="copyable">
+                            <button class="copy-btn" onclick="copyToClipboard('python main.py')">کپی</button>
+                            <code>python main.py</code>
+                        </div>
+                        
+                        <p>تبریک! کد شما با موفقیت اجرا شد.</p>
+                        
+                        <div class="instructions">
+                            <p><strong>نکات مهم:</strong></p>
+                            <ol>
+                                <li>همیشه قبل از اجرا مطمئن شوید در پوشه درست هستید (با دستور <code>pwd</code>)</li>
+                                <li>اگر خطایی دارید، کتابخانه‌های مورد نیاز را نصب کنید</li>
+                                <li>برای خروج از برنامه از <code>Ctrl+C</code> استفاده کنید</li>
+                            </ol>
+                        </div>
+                    `);
+                    break;
+            }
+        }
+        
+        // Function to handle quick replies
+        function handleQuickReply(reply) {
+            addMessage(reply, true);
+            
+            setTimeout(() => {
+                if (currentPlatform === 'github') {
+                    switch(reply) {
+                        case "ثبت نام کردم":
+                            showStep(2);
+                            break;
+                        case "آپلود کردم":
+                            showStep(3);
+                            break;
+                        case "فایل را پیدا کردم":
+                            showStep(4);
+                            break;
+                    }
+                } else {
+                    switch(reply) {
+                        case "نصب کردم و دسترسی دادم":
+                            showStep(2);
+                            break;
+                        case "انجام دادم":
+                            showStep(3);
+                            break;
+                        case "کتابخانه‌ها را نصب کردم":
+                            showStep(4);
+                            break;
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Send message function
+        function sendUserMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                messageInput.value = '';
+                
+                // Process message
+                setTimeout(() => {
+                    if (currentPlatform === 'github') {
+                        if (message.includes("ثبت نام")) {
+                            showStep(2);
+                        } else if (message.includes("آپلود")) {
+                            showStep(3);
+                        } else if (message.includes("پیدا")) {
+                            showStep(4);
+                        } else {
+                            showQuickReplies();
+                        }
+                    } else {
+                        if (message.includes("نصب")) {
+                            showStep(2);
+                        } else if (message.includes("انجام")) {
+                            showStep(3);
+                        } else if (message.includes("کتابخانه")) {
+                            showStep(4);
+                        } else {
+                            showQuickReplies();
+                        }
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Show quick replies
+        function showQuickReplies() {
+            let replies = [];
+            
+            if (currentPlatform === 'github') {
+                replies = ['ثبت نام کردم', 'آپلود کردم', 'فایل را پیدا کردم'];
+            } else {
+                replies = ['نصب کردم و دسترسی دادم', 'انجام دادم', 'کتابخانه‌ها را نصب کردم'];
+            }
+            
+            addMessage(`
+                لطفاً یکی از گزینه‌های زیر را انتخاب کنید:
+                <div class="quick-replies">
+                    ${replies.map(reply => 
+                        `<div class="quick-reply" onclick="handleQuickReply('${reply}')">${reply}</div>`
+                    ).join('')}
+                </div>
+            `);
+        }
+        
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('کد با موفقیت کپی شد!');
+            });
+        }
+        
+        // Event listeners
+        sendMessage.addEventListener('click', sendUserMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendUserMessage();
+            }
+        });
+        
+        // Expose functions to global scope
+        window.handleQuickReply = handleQuickReply;
+        window.copyToClipboard = copyToClipboard;
+        window.switchTab = switchTab;
+    </script>
+</body>
+</html>

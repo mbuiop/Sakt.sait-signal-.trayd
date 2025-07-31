@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم مدیریت سیگنال‌های معاملاتی | نسخه ادمین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a2a6c;
+            --secondary: #2a0845;
+            --accent: #00c9ff;
+            --success: #92fe9d;
+            --danger: #ff6491;
+            --dark: #0f172a;
+            --light: #f1f5f9;
+            --admin: #ff6b6b;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            perspective: 1000px;
+            overflow-x: hidden;
+            color: var(--light);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            transform: translateZ(20px);
+            animation: float 6s ease-in-out infinite;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 201, 255, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        .admin-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--admin);
+            color: var(--dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            color: var(--light);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(45deg, var(--accent), var(--success));
+            color: var(--dark);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .signal-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .signal {
+            background: rgba(20, 30, 48, 0.85);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .signal:hover {
+            transform: translateY(-10px) translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        
+        .signal-actions {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .signal-actions button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .signal-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .signal-actions .edit-btn:hover {
+            background: var(--accent);
+        }
+        
+        .signal-actions .delete-btn:hover {
+            background: var(--danger);
+        }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .signal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .signal-tag {
+            background: linear-gradient(45deg, var(--accent), var(--success));
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .signal-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .signal-label {
+            flex: 0 0 180px;
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .signal-value {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .targets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .target {
+            background: rgba(0, 201, 255, 0.15);
+            padding: 8px;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .stop-loss {
+            background: rgba(255, 0, 100, 0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: bold;
+            color: var(--danger);
+        }
+        
+        .free-tag {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+        
+        .background-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 201, 255, 0.1);
+            box-shadow: inset 0 0 50px rgba(0, 201, 255, 0.2), 
+                        0 0 80px rgba(0, 201, 255, 0.3);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .element:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .element:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            left: 15%;
+            animation-delay: -5s;
+        }
+        
+        .element:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            top: 30%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+        
+        .element:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            bottom: 10%;
+            right: 20%;
+            animation-delay: -7s;
+        }
+        
+        /* فرم اضافه کردن سیگنال */
+        .form-container {
+            background: rgba(20, 30, 48, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--accent);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--light);
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 201, 255, 0.3);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent), var(--success));
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 201, 255, 0.4);
+        }
+        
+        .btn-admin {
+            background: linear-gradient(45deg, var(--admin), #ff9e7d);
+            color: var(--dark);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .targets-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .targets-input input {
+            flex: 1;
+        }
+        
+        .targets-input button {
+            background: rgba(0, 201, 255, 0.3);
+            border: none;
+            border-radius: 8px;
+            color: var(--light);
+            width: 40px;
+            cursor: pointer;
+        }
+        
+        .targets-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .target-item {
+            background: rgba(0, 201, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .target-item button {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .empty-signals {
+            text-align: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .admin-login-btn {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            color: var(--light);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .admin-login-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .admin-login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+        
+        .admin-form {
+            background: rgba(20, 30, 48, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transform: translateZ(50px);
+        }
+        
+        .admin-form h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--admin);
+        }
+        
+        .admin-form p {
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--light);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: var(--admin);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.3);
+        }
+        
+        .admin-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        
+        .admin-close-btn:hover {
+            opacity: 1;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* انیمیشن‌ها */
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 40px) rotate(10deg);
+            }
+            50% {
+                transform: translate(-30px, 30px) rotate(-10deg);
+            }
+            75% {
+                transform: translate(10px, -20px) rotate(5deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* واکنش‌گرایی */
+        @media (max-width: 768px) {
+            .signal-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .signal-label {
+                flex: 0 0 auto;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-elements">
+        <div class="element"></div>
+        <div class="element"></div>
+        <div class="element"></div>
+        <div class="element"></div>
+    </div>
+    
+    <div class="admin-login-container" id="adminLoginContainer">
+        <button class="admin-close-btn" id="adminCloseBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="admin-form">
+            <h2><i class="fas fa-lock"></i> ورود به بخش ادمین</h2>
+            <p>برای دسترسی به بخش مدیریت سیگنال‌ها لطفاً رمز عبور ادمین را وارد کنید</p>
+            <input type="password" class="password-input" id="adminPassword" placeholder="رمز عبور ادمین" autocomplete="off">
+            <button class="btn btn-admin btn-block" id="adminLoginBtn">
+                <i class="fas fa-sign-in-alt"></i> ورود به سیستم
+            </button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="admin-indicator" id="adminIndicator">
+                <i class="fas fa-user-shield"></i> حالت ادمین فعال
+            </div>
+            <h1>سیستم مدیریت سیگنال‌های معاملاتی</h1>
+            <div class="subtitle">سیگنال‌های لحظه‌ای بازار رمزارزها</div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="signals-tab">
+                    <i class="fas fa-signal"></i> نمایش سیگنال‌ها
+                </button>
+                <button class="tab-btn" id="addSignalTabBtn" data-tab="add-tab" style="display: none;">
+                    <i class="fas fa-plus-circle"></i> افزودن سیگنال جدید
+                </button>
+            </div>
+            
+            <button class="admin-login-btn" id="adminAccessBtn">
+                <i class="fas fa-user-secret"></i> دسترسی ادمین
+            </button>
+        </header>
+        
+        <!-- تب نمایش سیگنال‌ها -->
+        <div id="signals-tab" class="tab-content active">
+            <div class="signal-container" id="signalContainer">
+                <!-- سیگنال‌ها توسط جاوااسکریپت در اینجا نمایش داده می‌شوند -->
+            </div>
+        </div>
+        
+        <!-- تب افزودن سیگنال جدید -->
+        <div id="add-tab" class="tab-content" style="display: none;">
+            <div class="form-container">
+                <h2 class="form-title">افزودن سیگنال جدید</h2>
+                <form id="signalForm">
+                    <div class="form-group">
+                        <label for="title">عنوان سیگنال:</label>
+                        <input type="text" id="title" class="form-control" placeholder="مثال: سیگنال اول" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currencyPair">جفت ارز:</label>
+                        <input type="text" id="currencyPair" class="form-control" placeholder="مثال: BTC/USDT" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="direction">جهت معامله:</label>
+                        <select id="direction" class="form-control" required>
+                            <option value="LONG">LONG (صعودی)</option>
+                            <option value="SHORT">SHORT (نزولی)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="leverage">لوریج (اهرم):</label>
+                        <input type="text" id="leverage" class="form-control" placeholder="مثال: 10x - 20x" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="entryPoints">محدوده نقطه ورود:</label>
+                        <input type="text" id="entryPoints" class="form-control" placeholder="مثال: 0.310 - 0.306" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تارگت‌ها:</label>
+                        <div class="targets-input">
+                            <input type="text" id="targetInput" class="form-control" placeholder="مقدار تارگت (مثال: 0.313)">
+                            <button type="button" id="addTargetBtn"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="targets-list" id="targetsList"></div>
+                        <input type="hidden" id="targets">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stopLoss">حد ضرر:</label>
+                        <input type="text" id="stopLoss" class="form-control" placeholder="مثال: 0.293" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-save"></i> ذخیره سیگنال
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        تمامی سیگنال‌ها در حافظه مرورگر شما ذخیره می‌شوند و با رفرش صفحه حفظ می‌شوند
+    </footer>
+    
+    <script>
+        // رمز عبور ادمین
+        const ADMIN_PASSWORD = "12345+!@#$%54321";
+        
+        // داده‌های اولیه سیگنال‌ها
+        const initialSignals = [
+            {
+                id: Date.now() + 1,
+                title: "سیگنال اول",
+                currencyPair: "SAND/USDT",
+                direction: "LONG",
+                leverage: "10x - 20x",
+                entryPoints: "0.310 - 0.306",
+                targets: ["0.313", "0.316", "0.322", "0.328", "0.335", "0.341"],
+                stopLoss: "0.293"
+            },
+            {
+                id: Date.now() + 2,
+                title: "سیگنال دوم",
+                currencyPair: "IP/USDT",
+                direction: "LONG",
+                leverage: "10x - 20x",
+                entryPoints: "5.60 - 5.50",
+                targets: ["5.65", "5.71", "5.82", "5.93", "6.05", "6.16"],
+                stopLoss: "5.31"
+            }
+        ];
+        
+        // عناصر DOM
+        const adminLoginContainer = document.getElementById('adminLoginContainer');
+        const adminCloseBtn = document.getElementById('adminCloseBtn');
+        const adminAccessBtn = document.getElementById('adminAccessBtn');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminPassword = document.getElementById('adminPassword');
+        const adminIndicator = document.getElementById('adminIndicator');
+        const addSignalTabBtn = document.getElementById('addSignalTabBtn');
+        const addSignalTab = document.getElementById('add-tab');
+        
+        // مدیریت دسترسی ادمین
+        function checkAdminStatus() {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                adminIndicator.style.display = 'block';
+                addSignalTabBtn.style.display = 'block';
+                addSignalTab.style.display = 'block';
+            }
+            return isAdmin;
+        }
+        
+        // نمایش فرم ورود ادمین
+        adminAccessBtn.addEventListener('click', () => {
+            adminLoginContainer.style.display = 'flex';
+            adminPassword.focus();
+        });
+        
+        // بستن فرم ورود ادمین
+        adminCloseBtn.addEventListener('click', () => {
+            adminLoginContainer.style.display = 'none';
+            adminPassword.value = '';
+        });
+        
+        // ورود ادمین
+        adminLoginBtn.addEventListener('click', () => {
+            if (adminPassword.value === ADMIN_PASSWORD) {
+                localStorage.setItem('isAdmin', 'true');
+                checkAdminStatus();
+                adminLoginContainer.style.display = 'none';
+                adminPassword.value = '';
+                
+                // نمایش تب افزودن سیگنال
+                document.querySelectorAll('.tab-btn')[1].click();
+                
+                // پویانمایی برای تأیید ورود
+                adminIndicator.style.animation = 'pulse 0.5s ease-in-out';
+                setTimeout(() => {
+                    adminIndicator.style.animation = '';
+                }, 500);
+            } else {
+                alert('رمز عبور اشتباه است!');
+                adminPassword.value = '';
+                adminPassword.focus();
+            }
+        });
+        
+        // مدیریت تب‌ها
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // حذف کلاس active از همه دکمه‌ها و تب‌ها
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                
+                // اضافه کردن کلاس active به دکمه و تب انتخاب شده
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // مدیریت تارگت‌ها در فرم
+        const targetInput = document.getElementById('targetInput');
+        const addTargetBtn = document.getElementById('addTargetBtn');
+        const targetsList = document.getElementById('targetsList');
+        const targetsHidden = document.getElementById('targets');
+        let targetsArray = [];
+        
+        addTargetBtn.addEventListener('click', () => {
+            const value = targetInput.value.trim();
+            if (value) {
+                targetsArray.push(value);
+                updateTargetsList();
+                targetInput.value = '';
+                targetInput.focus();
+            }
+        });
+        
+        function updateTargetsList() {
+            targetsList.innerHTML = '';
+            targetsArray.forEach((target, index) => {
+                const item = document.createElement('div');
+                item.className = 'target-item';
+                item.innerHTML = `
+                    <span>${target}</span>
+                    <button type="button" class="remove-target" data-index="${index}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                targetsList.appendChild(item);
+            });
+            
+            // ذخیره مقادیر در فیلد مخفی
+            targetsHidden.value = JSON.stringify(targetsArray);
+            
+            // افزودن رویداد حذف
+            document.querySelectorAll('.remove-target').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = parseInt(button.getAttribute('data-index'));
+                    targetsArray.splice(index, 1);
+                    updateTargetsList();
+                });
+            });
+        }
+        
+        // مدیریت فرم
+        const signalForm = document.getElementById('signalForm');
+        
+        signalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // ایجاد سیگنال جدید
+            const newSignal = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                currencyPair: document.getElementById('currencyPair').value,
+                direction: document.getElementById('direction').value,
+                leverage: document.getElementById('leverage').value,
+                entryPoints: document.getElementById('entryPoints').value,
+                targets: targetsArray,
+                stopLoss: document.getElementById('stopLoss').value
+            };
+            
+            // ذخیره سیگنال جدید
+            saveSignal(newSignal);
+            
+            // نمایش تب سیگنال‌ها
+            document.querySelectorAll('.tab-btn')[0].click();
+            
+            // ریست فرم
+            signalForm.reset();
+            targetsArray = [];
+            updateTargetsList();
+            
+            // نمایش پیام موفقیت
+            alert('سیگنال جدید با موفقیت اضافه شد!');
+        });
+        
+        // تابع ذخیره سیگنال
+        function saveSignal(signal) {
+            const signals = getSignals();
+            signals.push(signal);
+            localStorage.setItem('tradingSignals', JSON.stringify(signals));
+            displaySignals();
+        }
+        
+        // تابع دریافت سیگنال‌ها
+        function getSignals() {
+            const savedSignals = localStorage.getItem('tradingSignals');
+            return savedSignals ? JSON.parse(savedSignals) : initialSignals;
+        }
+        
+        // تابع حذف سیگنال
+        function deleteSignal(id) {
+            if (confirm('آیا از حذف این سیگنال اطمینان دارید؟')) {
+                let signals = getSignals();
+                signals = signals.filter(signal => signal.id !== id);
+                localStorage.setItem('tradingSignals', JSON.stringify(signals));
+                displaySignals();
+            }
+        }
+        
+        // تابع برای ویرایش سیگنال
+        function editSignal(id) {
+            const signals = getSignals();
+            const signal = signals.find(s => s.id === id);
+            
+            if (signal) {
+                // پر کردن فرم با اطلاعات سیگنال
+                document.getElementById('title').value = signal.title;
+                document.getElementById('currencyPair').value = signal.currencyPair;
+                document.getElementById('direction').value = signal.direction;
+                document.getElementById('leverage').value = signal.leverage;
+                document.getElementById('entryPoints').value = signal.entryPoints;
+                document.getElementById('stopLoss').value = signal.stopLoss;
+                
+                targetsArray = [...signal.targets];
+                updateTargetsList();
+                
+                // حذف سیگنال قدیمی
+                deleteSignal(id);
+                
+                // نمایش تب افزودن
+                document.querySelectorAll('.tab-btn')[1].click();
+                
+                // اسکرول به فرم
+                document.getElementById('signalForm').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // تابع برای ایجاد HTML سیگنال
+        function createSignalElement(signal) {
+            return `
+                <div class="signal">
+                    ${checkAdminStatus() ? `
+                    <div class="signal-actions">
+                        <button class="edit-btn" onclick="editSignal(${signal.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteSignal(${signal.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="signal-header">
+                        <div class="signal-title">${signal.title}</div>
+                        <div class="signal-tag">فیوچرز رایگان</div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">🟦 جفت ارز:</div>
+                        <div class="signal-value">${signal.currencyPair}</div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">🟢 جهت معامله:</div>
+                        <div class="signal-value">${signal.direction} 🟢</div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">⚡ لوریج (اهرم):</div>
+                        <div class="signal-value">${signal.leverage}</div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">✅ محدوده نقطه ورود:</div>
+                        <div class="signal-value">${signal.entryPoints}</div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">🔥 تارگت‌ها:</div>
+                        <div class="signal-value">
+                            <div class="targets-container">
+                                ${signal.targets.map((target, i) => 
+                                    `<div class="target">${i + 1}) ${target}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="signal-row">
+                        <div class="signal-label">❌ حد ضرر:</div>
+                        <div class="signal-value">
+                            <span class="stop-loss">${signal.stopLoss}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="free-tag">سیگنال فیوچرز رایگان 🟩</div>
+                </div>
+            `;
+        }
+        
+        // نمایش سیگنال‌ها در صفحه
+        function displaySignals() {
+            const signalContainer = document.getElementById('signalContainer');
+            const signals = getSignals();
+            
+            if (signals.length > 0) {
+                signalContainer.innerHTML = signals.map(signal => 
+                    createSignalElement(signal)
+                ).join('');
+                
+                // ایجاد افکت سه‌بعدی برای کارت‌ها با حرکت موس
+                const signalElements = document.querySelectorAll('.signal');
+                signalElements.forEach(signal => {
+                    signal.addEventListener('mousemove', (e) => {
+                        const rect = signal.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateY = (x - centerX) / 25;
+                        const rotateX = (centerY - y) / 25;
+                        
+                        signal.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+                    });
+                    
+                    signal.addEventListener('mouseleave', () => {
+                        signal.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                    });
+                });
+            } else {
+                signalContainer.innerHTML = `
+                    <div class="empty-signals">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <p>هیچ سیگنالی یافت نشد</p>
+                        <p>برای افزودن سیگنال جدید از تب "افزودن سیگنال جدید" استفاده کنید</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // مقداردهی اولیه صفحه
+        document.addEventListener('DOMContentLoaded', () => {
+            // اگر داده‌ای در localStorage نیست، داده‌های اولیه را ذخیره کن
+            if (!localStorage.getItem('tradingSignals')) {
+                localStorage.setItem('tradingSignals', JSON.stringify(initialSignals));
+            }
+            
+            // بررسی وضعیت ادمین
+            checkAdminStatus();
+            
+            displaySignals();
+        });
+        
+        // اضافه کردن توابع به window برای دسترسی از رویدادهای onclick
+        window.editSignal = editSignal;
+        window.deleteSignal = deleteSignal;
+    </script>
+</body>
+</html>

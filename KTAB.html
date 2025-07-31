@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کتابخانه های پایتون با دستورات نصب</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 1s ease;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+            max-width: 700px;
+            line-height: 1.7;
+            animation: slideIn 1s ease;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease;
+        }
+        
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .category {
+            background: rgba(30, 30, 50, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        .category.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, #8E2DE2, #4A00E0);
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-header i {
+            font-size: 1.8rem;
+            margin-left: 15px;
+        }
+        
+        .category-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+        
+        .library-list {
+            padding: 20px;
+        }
+        
+        .library-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .library-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .library-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+            border-color: rgba(79, 172, 254, 0.5);
+        }
+        
+        .copy-btn {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 1.15rem;
+            text-align: right;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .copy-btn .icon {
+            font-size: 1.4rem;
+            opacity: 0.7;
+            transition: all 0.3s;
+            color: #4facfe;
+        }
+        
+        .copy-btn:hover .icon {
+            opacity: 1;
+            transform: scale(1.2);
+            color: #00f2fe;
+        }
+        
+        .library-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4facfe;
+        }
+        
+        .install-command {
+            direction: ltr;
+            text-align: left;
+            font-size: 1.05rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 6px;
+            margin-top: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 25px rgba(79, 172, 254, 0.4);
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #a0a0c0;
+            font-size: 1rem;
+            margin-top: auto;
+            width: 100%;
+            animation: fadeIn 2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .category {
+                max-width: 100%;
+            }
+            
+            .copy-btn {
+                padding: 16px 20px;
+                font-size: 1.05rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .category-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .copy-btn {
+                font-size: 0.95rem;
+                padding: 14px 15px;
+            }
+            
+            .tab-btn {
+                padding: 10px 18px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>کتابخانه های پایتون با دستورات نصب</h1>
+        <p class="description">کاملترین مجموعه کتابخانه‌های پایتون به همراه دستورات نصب. روی هر کتابخانه کلیک کنید تا دستور نصب آن کپی شود.</p>
+    </header>
+    
+    <div class="tabs">
+        <button class="tab-btn active" data-category="all">
+            <i class="fas fa-star"></i>همه دسته‌ها
+        </button>
+        <button class="tab-btn" data-category="telegram">
+            <i class="fab fa-telegram"></i>ربات تلگرام
+        </button>
+        <button class="tab-btn" data-category="game">
+            <i class="fas fa-gamepad"></i>ساخت بازی
+        </button>
+        <button class="tab-btn" data-category="image">
+            <i class="fas fa-image"></i>پردازش تصویر
+        </button>
+        <button class="tab-btn" data-category="general">
+            <i class="fas fa-book"></i>عمومی
+        </button>
+    </div>
+    
+    <div class="container">
+        <!-- دسته‌بندی ربات‌های تلگرام -->
+        <div class="category visible" data-category="telegram">
+            <div class="category-header">
+                <i class="fab fa-telegram"></i>
+                <h2>کتابخانه‌های ربات تلگرام</h2>
+            </div>
+            <div class="library-list">
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">python-telegram-bot</div>
+                            <div class="install-command">pip install python-telegram-bot</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">pyTelegramBotAPI</div>
+                            <div class="install-command">pip install pyTelegramBotAPI</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Telethon</div>
+                            <div class="install-command">pip install telethon</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">aiogram</div>
+                            <div class="install-command">pip install aiogram</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">tgbot</div>
+                            <div class="install-command">pip install tgbot</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">telegram</div>
+                            <div class="install-command">pip install telegram</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">pyrogram</div>
+                            <div class="install-command">pip install pyrogram</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">telepot</div>
+                            <div class="install-command">pip install telepot</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">telegraph</div>
+                            <div class="install-command">pip install telegraph</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">telegram-send</div>
+                            <div class="install-command">pip install telegram-send</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- دسته‌بندی توسعه بازی -->
+        <div class="category visible" data-category="game">
+            <div class="category-header">
+                <i class="fas fa-gamepad"></i>
+                <h2>کتابخانه‌های ساخت بازی</h2>
+            </div>
+            <div class="library-list">
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Pygame</div>
+                            <div class="install-command">pip install pygame</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Arcade</div>
+                            <div class="install-command">pip install arcade</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Pyglet</div>
+                            <div class="install-command">pip install pyglet</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Panda3D</div>
+                            <div class="install-command">pip install panda3d</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">PyOpenGL</div>
+                            <div class="install-command">pip install PyOpenGL</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">PyOgre</div>
+                            <div class="install-command">pip install PyOgre</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Ren'Py</div>
+                            <div class="install-command">pip install renpy</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Kivy</div>
+                            <div class="install-command">pip install kivy</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Cocos2d</div>
+                            <div class="install-command">pip install cocos2d</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">PySDL2</div>
+                            <div class="install-command">pip install PySDL2</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- دسته‌بندی پردازش تصویر -->
+        <div class="category visible" data-category="image">
+            <div class="category-header">
+                <i class="fas fa-image"></i>
+                <h2>کتابخانه‌های پردازش تصویر</h2>
+            </div>
+            <div class="library-list">
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">OpenCV</div>
+                            <div class="install-command">pip install opencv-python</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Pillow</div>
+                            <div class="install-command">pip install pillow</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">scikit-image</div>
+                            <div class="install-command">pip install scikit-image</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Mahotas</div>
+                            <div class="install-command">pip install mahotas</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">SimpleITK</div>
+                            <div class="install-command">pip install SimpleITK</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Open3D</div>
+                            <div class="install-command">pip install open3d</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">imageio</div>
+                            <div class="install-command">pip install imageio</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Matplotlib</div>
+                            <div class="install-command">pip install matplotlib</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">PyQtGraph</div>
+                            <div class="install-command">pip install pyqtgraph</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">visvis</div>
+                            <div class="install-command">pip install visvis</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- دسته‌بندی کتابخانه‌های عمومی -->
+        <div class="category visible" data-category="general">
+            <div class="category-header">
+                <i class="fas fa-book"></i>
+                <h2>کتابخانه‌های عمومی پایتون</h2>
+            </div>
+            <div class="library-list">
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Django</div>
+                            <div class="install-command">pip install django</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Flask</div>
+                            <div class="install-command">pip install flask</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">NumPy</div>
+                            <div class="install-command">pip install numpy</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Pandas</div>
+                            <div class="install-command">pip install pandas</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Matplotlib</div>
+                            <div class="install-command">pip install matplotlib</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">SciPy</div>
+                            <div class="install-command">pip install scipy</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">TensorFlow</div>
+                            <div class="install-command">pip install tensorflow</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">PyTorch</div>
+                            <div class="install-command">pip install torch</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">Requests</div>
+                            <div class="install-command">pip install requests</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+                <div class="library-item">
+                    <button class="copy-btn">
+                        <div>
+                            <div class="library-name">BeautifulSoup</div>
+                            <div class="install-command">pip install beautifulsoup4</div>
+                        </div>
+                        <span class="icon"><i class="fas fa-copy"></i></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="copyNotification">
+        <i class="fas fa-check-circle"></i>
+        <span>دستور نصب با موفقیت کپی شد!</span>
+    </div>
+    
+    <footer>
+        <p>هر کتابخانه با یک کلیک کپی می‌شود | طراحی شده برای توسعه‌دهندگان پایتون</p>
+    </footer>
+    
+    <script>
+        // کپی کردن متن با کلیک روی دکمه‌ها
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const command = this.querySelector('.install-command').textContent;
+                
+                // کپی دستور نصب به کلیپ‌بورد
+                navigator.clipboard.writeText(command)
+                    .then(() => {
+                        // نمایش اعلان کپی موفق
+                        const notification = document.getElementById('copyNotification');
+                        notification.classList.add('show');
+                        
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 2500);
+                    })
+                    .catch(err => {
+                        console.error('خطا در کپی کردن: ', err);
+                    });
+            });
+        });
+        
+        // سیستم تب‌ها برای فیلتر دسته‌بندی‌ها
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const categories = document.querySelectorAll('.category');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                
+                // آپدیت وضعیت تب‌ها
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // نمایش دسته‌بندی‌های مرتبط
+                categories.forEach(cat => {
+                    if (category === 'all' || cat.getAttribute('data-category') === category) {
+                        cat.classList.add('visible');
+                    } else {
+                        cat.classList.remove('visible');
+                    }
+                });
+            });
+        });
+        
+        // انیمیشن برای دسته‌بندی‌ها
+        document.querySelectorAll('.category').forEach((category, index) => {
+            setTimeout(() => {
+                category.classList.add('visible');
+            }, 300 + index * 200);
+        });
+    </script>
+</body>
+</html>

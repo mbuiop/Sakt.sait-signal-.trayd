@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Code Rain Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Welcome message and management container */
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        /* Management button styles */
+        .management-btn {
+            background: linear-gradient(145deg, #ffeb3b, #ffc107);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 235, 59, 0.4);
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .management-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Welcome message */
+        .welcome-message {
+            color: #fff;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Public message container */
+        .public-message-container {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            border-radius: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.3);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .public-message {
+            flex: 1;
+            color: #00ff41;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .close-message {
+            background: transparent;
+            border: none;
+            color: #ff6b6b;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.3);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        .modal-content textarea {
+            height: 150px;
+        }
+
+        .modal-content button {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 0, 0, 0.5) !important;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Falling code from top */
+        .falling-code {
+            position: absolute;
+            top: -50px;
+            color: #00ff41;
+            font-size: 14px;
+            font-weight: 400;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            animation: fallDown 8s linear infinite;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        @keyframes fallDown {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(calc(100vh + 50px)) rotate(5deg);
+                opacity: 0;
+            }
+        }
+
+        /* Different code colors */
+        .python-code { color: #3776ab; text-shadow: 0 0 10px rgba(55, 118, 171, 0.6); }
+        .java-code { color: #f89820; text-shadow: 0 0 10px rgba(248, 152, 32, 0.6); }
+        .javascript-code { color: #f7df1e; text-shadow: 0 0 10px rgba(247, 223, 30, 0.6); }
+        .crypto-code { color: #ff6b35; text-shadow: 0 0 10px rgba(255, 107, 53, 0.6); }
+        .blockchain-code { color: #00d4aa; text-shadow: 0 0 10px rgba(0, 212, 170, 0.6); }
+
+        /* Floating crypto animations */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            z-index: 2;
+            animation: floatDown 10s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatDown {
+            0% {
+                transform: translateY(-80px) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(calc(100vh + 80px)) rotate(360deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        /* Bitcoin symbol */
+        .bitcoin-symbol {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #f7931a, #ff6b35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 16px rgba(247, 147, 26, 0.4);
+            animation: floatDown 10s linear infinite, pulse 2s ease-in-out infinite;
+        }
+
+        .bitcoin-symbol::before {
+            content: '₿';
+        }
+
+        /* Ethereum symbol */
+        .ethereum-symbol {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #627eea, #3c3c3d);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 16px rgba(98, 126, 234, 0.4);
+            animation: floatDown 12s linear infinite, rotate 3s linear infinite;
+        }
+
+        .ethereum-symbol::before {
+            content: 'Ξ';
+        }
+
+        /* Shiba symbol */
+        .shiba-symbol {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffa726, #ff5722);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 16px rgba(255, 167, 38, 0.4);
+            animation: floatDown 9s linear infinite, bounce 1.5s ease-in-out infinite;
+        }
+
+        .shiba-symbol::before {
+            content: 'SHIB';
+            font-size: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 60px;
+        }
+
+        .btn {
+            width: 170px;
+            height: 170px;
+            border-radius: 35px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Button text styles */
+        .btn-text {
+            position: relative;
+            z-index: 10;
+            color: #000;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* Beautiful button colors */
+        .btn:nth-child(1) {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            box-shadow: 0 45px 90px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:nth-child(2) {
+            background: linear-gradient(145deg, #f093fb, #f5576c);
+            box-shadow: 0 55px 100px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn:nth-child(3) {
+            background: linear-gradient(145deg, #4facfe, #00f2fe);
+            box-shadow: 0 35px 70px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:nth-child(4) {
+            background: linear-gradient(145deg, #43e97b, #38f9d7);
+            box-shadow: 0 65px 110px rgba(67, 233, 123, 0.3);
+        }
+
+        .btn:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            filter: brightness(1.2) saturate(1.3);
+        }
+
+        /* Rainbow spotlight effects */
+        .spotlight {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .spotlight-1 { background: radial-gradient(circle, rgba(255, 0, 127, 0.6) 0%, transparent 70%); }
+        .spotlight-2 { background: radial-gradient(circle, rgba(255, 127, 0, 0.6) 0%, transparent 70%); }
+        .spotlight-3 { background: radial-gradient(circle, rgba(255, 255, 0, 0.6) 0%, transparent 70%); }
+        .spotlight-4 { background: radial-gradient(circle, rgba(127, 255, 0, 0.6) 0%, transparent 70%); }
+
+        /* Glowing inner effect for buttons */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: inherit;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 35px;
+            }
+
+            .btn {
+                width: 140px;
+                height: 140px;
+                font-size: 14px;
+            }
+
+            .btn-icon {
+                font-size: 24px;
+            }
+
+            .floating-element {
+                transform: scale(0.8);
+            }
+            
+            .welcome-message {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .public-message-container {
+                top: 70px;
+                padding: 10px 15px;
+            }
+            
+            .public-message {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Alert container with management button and welcome message -->
+    <div class="alert-container">
+        <div class="welcome-message">
+            به پلتفرم یادگیری برنامه نویسی و کسب درآمد ترید و تحلیل تکنیکال خوش آمدید
+        </div>
+        <button class="management-btn" id="managementBtn">مدیریت</button>
+    </div>
+    
+    <!-- Public message container (initially hidden) -->
+    <div id="publicMessageContainer" class="public-message-container" style="display: none;">
+        <div class="public-message">
+            <span id="publicMessageText"></span>
+            <button class="close-message">&times;</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="button-grid">
+            <a href="s.html" class="btn" data-btn="1">
+                <div class="spotlight spotlight-1"></div>
+                <span class="btn-text">
+                    <span class="btn-icon">📈</span>
+                    تحلیل تكنيكال
+                </span>
+            </a>
+            <a href="b.html" class="btn" data-btn="2">
+                <div class="spotlight spotlight-2"></div>
+                <span class="btn-text">
+                    <span class="btn-icon">📊</span>
+                    سیگنال ها
+                </span>
+            </a>
+            <a href="p.html" class="btn" data-btn="3">
+                <div class="spotlight spotlight-3"></div>
+                <span class="btn-text">
+                    <span class="btn-icon">🐍</span>
+                    آموزش پایتون
+                </span>
+            </a>
+            <a href="t.html" class="btn" data-btn="4">
+                <div class="spotlight spotlight-4"></div>
+                <span class="btn-text">
+                    <span class="btn-icon">🖥️</span>
+                    آموزش HTML
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Password for management access
+        const MANAGEMENT_PASSWORD = "12345+!@#$%54321";
+        
+        // Code snippets
+        const codeSnippets = {
+            python: [
+                'import pandas as pd',
+                'import numpy as np',
+                'def buy_bitcoin():',
+                'price = get_crypto_price("BTC")',
+                'if rsi < 30: buy_signal = True',
+                'portfolio["BTC"] += amount',
+                'for coin in watchlist:',
+                'profit = (sell_price - buy_price) * quantity',
+                'df = pd.read_csv("crypto_data.csv")',
+                'return investment_return'
+            ],
+            java: [
+                'public class CryptoTrader {',
+                'private BigDecimal balance;',
+                'List<Transaction> history;',
+                'if (signal.equals("BUY")) {',
+                'wallet.addCoin(bitcoin, amount);',
+                'catch (InsufficientFundsException e)',
+                'Thread tradingBot = new Thread();',
+                'Map<String, Double> prices;',
+                'exchange.placeBuyOrder(btc, qty);',
+                'System.out.println("Trade executed");'
+            ],
+            javascript: [
+                'const web3 = new Web3(provider);',
+                'let ethPrice = await getPrice("ETH");',
+                'if (btcPrice > resistance) {',
+                'wallet.connect();',
+                'const contract = new Contract(abi);',
+                'metamask.sendTransaction({',
+                'fetch("/api/crypto-prices")',
+                'localStorage.setItem("portfolio");',
+                'async function swapTokens() {',
+                'console.log("DeFi swap complete");'
+            ],
+            crypto: [
+                'BTC: $67,234.56 (+2.34%)',
+                'ETH: $3,456.78 (-1.23%)',
+                'SHIB: $0.000024 (+5.67%)',
+                'Market Cap: $2.4 Trillion',
+                'Volume 24h: $89.5 Billion',
+                'Fear & Greed Index: 72',
+                'Bitcoin Dominance: 52.3%',
+                'Total Cryptocurrencies: 13,456',
+                'Active Trading Pairs: 45,234',
+                'DeFi TVL: $156.7 Billion'
+            ],
+            blockchain: [
+                'Block Height: 823,456',
+                'Hash: 0x00000000000a2b3c4d5e',
+                'Mining Difficulty: +3.2%',
+                'Network Hash Rate: 450 EH/s',
+                'Mempool Size: 2,543 txs',
+                'Average Block Time: 9.8 min',
+                'Transaction Fees: 25 sat/vB',
+                'Nodes Online: 15,678',
+                'Lightning Channels: 89,234',
+                'Smart Contracts: 2.3M deployed'
+            ]
+        };
+
+        // Create falling code from top
+        function createFallingCode() {
+            const languages = Object.keys(codeSnippets);
+            const randomLang = languages[Math.floor(Math.random() * languages.length)];
+            const randomCode = codeSnippets[randomLang][Math.floor(Math.random() * codeSnippets[randomLang].length)];
+            
+            const codeElement = document.createElement('div');
+            codeElement.className = `falling-code ${randomLang}-code`;
+            codeElement.textContent = randomCode;
+            codeElement.style.left = Math.random() * (window.innerWidth - 300) + 'px';
+            codeElement.style.animationDelay = Math.random() * 2 + 's';
+            codeElement.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            
+            document.body.appendChild(codeElement);
+            
+            setTimeout(() => {
+                codeElement.remove();
+            }, 10000);
+        }
+
+        // Create floating Bitcoin
+        function createBitcoin() {
+            const bitcoin = document.createElement('div');
+            bitcoin.className = 'floating-element bitcoin-symbol';
+            bitcoin.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+            bitcoin.style.animationDelay = Math.random() * 2 + 's';
+            bitcoin.style.animationDuration = (Math.random() * 3 + 8) + 's';
+            document.body.appendChild(bitcoin);
+            
+            setTimeout(() => bitcoin.remove(), 11000);
+        }
+
+        // Create floating Ethereum
+        function createEthereum() {
+            const ethereum = document.createElement('div');
+            ethereum.className = 'floating-element ethereum-symbol';
+            ethereum.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+            ethereum.style.animationDelay = Math.random() * 2 + 's';
+            ethereum.style.animationDuration = (Math.random() * 4 + 9) + 's';
+            document.body.appendChild(ethereum);
+            
+            setTimeout(() => ethereum.remove(), 13000);
+        }
+
+        // Create floating Shiba
+        function createShiba() {
+            const shiba = document.createElement('div');
+            shiba.className = 'floating-element shiba-symbol';
+            shiba.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+            shiba.style.animationDelay = Math.random() * 2 + 's';
+            shiba.style.animationDuration = (Math.random() * 3 + 7) + 's';
+            document.body.appendChild(shiba);
+            
+            setTimeout(() => shiba.remove(), 10000);
+        }
+
+        // Button click effects with rainbow sequence
+        document.querySelectorAll('.btn').forEach((btn, index) => {
+            btn.addEventListener('click', function() {
+                const spotlight = this.querySelector('.spotlight');
+                
+                // Rainbow sequence colors
+                const colors = [
+                    'radial-gradient(circle, rgba(255, 0, 127, 0.8) 0%, transparent 70%)',
+                    'radial-gradient(circle, rgba(255, 127, 0, 0.8) 0%, transparent 70%)',
+                    'radial-gradient(circle, rgba(255, 255, 0, 0.8) 0%, transparent 70%)',
+                    'radial-gradient(circle, rgba(127, 255, 0, 0.8) 0%, transparent 70%)'
+                ];
+                
+                spotlight.style.opacity = '1';
+                
+                let colorIndex = 0;
+                const colorInterval = setInterval(() => {
+                    spotlight.style.background = colors[colorIndex];
+                    colorIndex++;
+                    
+                    if (colorIndex >= colors.length) {
+                        clearInterval(colorInterval);
+                        
+                        setTimeout(() => {
+                            spotlight.style.opacity = '0';
+                        }, 500);
+                    }
+                }, 350);
+            });
+        });
+
+        // Show password modal
+        function showPasswordModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>ورود به بخش مدیریت</h3>
+                    <p>لطفا رمز عبور را وارد کنید:</p>
+                    <input type="password" id="adminPassword" autocomplete="off" />
+                    <button id="submitPassword">تایید</button>
+                    <button class="modal-close">×</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Focus on password input
+            setTimeout(() => {
+                document.getElementById('adminPassword').focus();
+            }, 100);
+
+            // Submit password
+            modal.querySelector('#submitPassword').addEventListener('click', function() {
+                const password = document.getElementById('adminPassword').value;
+                if (password === MANAGEMENT_PASSWORD) {
+                    modal.remove();
+                    showMessageModal();
+                } else {
+                    alert('رمز عبور اشتباه است');
+                }
+            });
+
+            // Close modal
+            modal.querySelector('.modal-close').addEventListener('click', function() {
+                modal.remove();
+            });
+            
+            // Close on click outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Show message modal
+        function showMessageModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>ارسال پیام همگانی</h3>
+                    <p>پیام خود را برای نمایش به کاربران وارد کنید:</p>
+                    <textarea id="publicMessageInput" rows="5" placeholder="متن پیام ..."></textarea>
+                    <button id="sendPublicMessage">ارسال</button>
+                    <button class="modal-close">×</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Focus on textarea
+            setTimeout(() => {
+                document.getElementById('publicMessageInput').focus();
+            }, 100);
+
+            // Send message
+            modal.querySelector('#sendPublicMessage').addEventListener('click', function() {
+                const message = document.getElementById('publicMessageInput').value;
+                if (message.trim() !== '') {
+                    displayPublicMessage(message);
+                    modal.remove();
+                } else {
+                    alert('لطفا پیام را وارد کنید');
+                }
+            });
+
+            // Close modal
+            modal.querySelector('.modal-close').addEventListener('click', function() {
+                modal.remove();
+            });
+            
+            // Close on click outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Display public message on the page
+        function displayPublicMessage(message) {
+            const container = document.getElementById('publicMessageContainer');
+            const messageText = document.getElementById('publicMessageText');
+            
+            messageText.textContent = message;
+            container.style.display = 'flex';
+            
+            // Add event listener for close button
+            container.querySelector('.close-message').addEventListener('click', function() {
+                container.style.display = 'none';
+            });
+        }
+
+        // Initialize the app
+        function initApp() {
+            // Generate elements continuously
+            setInterval(createFallingCode, 400);
+            setInterval(createBitcoin, 2000);
+            setInterval(createEthereum, 2500);
+            setInterval(createShiba, 1800);
+
+            // Initialize with some elements
+            for (let i = 0; i < 5; i++) {
+                setTimeout(createFallingCode, i * 200);
+                setTimeout(createBitcoin, i * 600);
+                setTimeout(createEthereum, i * 800);
+                setTimeout(createShiba, i * 700);
+            }
+            
+            // Add management button event listener
+            document.getElementById('managementBtn').addEventListener('click', showPasswordModal);
+        }
+
+        // Start the app
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

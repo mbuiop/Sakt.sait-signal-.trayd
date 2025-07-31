@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>۵۰ اندیکاتور ارز دیجیتال</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1c2c, #2d3250);
+            color: #f5f7ff;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+        
+        .indicator-card {
+            background: rgba(30, 33, 57, 0.85);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(78, 84, 200, 0.2),
+                0 0 20px rgba(0, 201, 255, 0.1) inset;
+            transition: all 0.3s ease;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            border: 1px solid rgba(0, 201, 255, 0.15);
+        }
+        
+        .indicator-card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                0 0 0 2px rgba(0, 201, 255, 0.3),
+                0 0 30px rgba(0, 201, 255, 0.2) inset;
+        }
+        
+        .indicator-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 201, 255, 0.2);
+        }
+        
+        .indicator-title i {
+            font-size: 1.6rem;
+            color: #00c9ff;
+            margin-left: 12px;
+            text-shadow: 0 0 10px rgba(0, 201, 255, 0.5);
+        }
+        
+        .indicator-title h2 {
+            font-size: 1.4rem;
+            color: #fff;
+            text-shadow: 0 0 8px rgba(78, 84, 200, 0.4);
+        }
+        
+        .indicator-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #d0d4f7;
+            margin-bottom: 12px;
+        }
+        
+        .signal {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin: 4px 2px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+            transform: translateZ(20px);
+        }
+        
+        .buy {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+        }
+        
+        .sell {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+        }
+        
+        .neutral {
+            background: linear-gradient(to right, #4A00E0, #8E2DE2);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="indicators-grid">
+            <!-- Indicator 1 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-wave-square"></i>
+                    <h2>RSI (شاخص قدرت نسبی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور شناسایی نقاط اشباع خرید و فروش. مقادیر بین ۰ تا ۱۰۰</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> RSI زیر ۳۰</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> RSI بالای ۷۰</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 2 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h2>MACD (واگرایی همگرایی میانگین متحرک)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور مومنتوم برای شناسایی تغییر روندها</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> خط MACD از پایین خط سیگنال را قطع کند</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> خط MACD از بالا خط سیگنال را قطع کند</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 3 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-compress-alt"></i>
+                    <h2>Bollinger Bands (باندهای بولینگر)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور نوسانات قیمت حول میانگین متحرک</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت به باند پایین برسد و برگردد</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت به باند بالا برسد و برگردد</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 4 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Moving Average (میانگین متحرک)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>میانگین قیمت در بازه زمانی مشخص</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت از بالا قطع کند MA کوتاه‌مدت MA بلندمدت را</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت از پایین قطع کند MA کوتاه‌مدت MA بلندمدت را</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 5 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-wind"></i>
+                    <h2>CCI (شاخص کانال کالا)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور شناسایی سطوح اشباع خرید و فروش</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور CCI از زیر -۱۰۰ به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور CCI از بالای ۱۰۰ به پایین</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 6 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-stethoscope"></i>
+                    <h2>Stochastic (استوکاستیک)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور شناسایی نقاط برگشتی قیمت</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور %K از پایین %D را به بالا قطع کند</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور %K از بالا %D را به پایین قطع کند</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 7 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h2>ADX (شاخص حرکت جهت دار میانگین)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری قدرت روند بدون جهت آن</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> ADX بالای ۲۵ در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> ADX بالای ۲۵ در روند نزولی</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 8 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-ruler-combined"></i>
+                    <h2>Fibonacci Retracement (فیبوناچی اصلاحی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>سطوح حمایت و مقاومت بر اساس نسبت‌های فیبوناچی</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> برگشت از سطح ۶۱.۸% یا ۷۸.۶%</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> برگشت از سطح ۳۸.۲% یا ۲۳.۶%</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 9 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-balance-scale"></i>
+                    <h2>MFI (شاخص جریان پول)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور حجمی اشباع خرید و فروش</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> MFI زیر ۲۰</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> MFI بالای ۸۰</p>
+                </div>
+            </div>
+            
+            <!-- Indicator 10 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-area"></i>
+                    <h2>Volume (حجم معاملات)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور تأیید قدرت روند با حجم معاملات</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش حجم در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> افزایش حجم در روند نزولی</p>
+                </div>
+            </div>
+            
+            <!-- Indicators 11-20 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-sync"></i>
+                    <h2>Parabolic SAR (سار پارابولیک)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>نشان‌دهنده نقاط برگشتی بالقوه</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> نقاط زیر شمع‌ها ظاهر شوند</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> نقاط بالای شمع‌ها ظاهر شوند</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-arrows-alt-h"></i>
+                    <h2>DMI (شاخص حرکت جهت دار)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری جهت و قدرت روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> +DI بالاتر از -DI</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> -DI بالاتر از +DI</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-broadcast-tower"></i>
+                    <h2>Force Index (شاخص نیرو)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری قدرت حرکات قیمت با حجم</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> مقدار مثبت و در حال افزایش</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> مقدار منفی و در حال کاهش</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-project-diagram"></i>
+                    <h2>Ichimoku Cloud (ابر ایچیموکو)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>سیستم جامع تحلیل تکنیکال</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت بالای ابر و Tenkan Sen بالای Kijun Sen</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت زیر ابر و Tenkan Sen زیر Kijun Sen</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-random"></i>
+                    <h2>Stochastic RSI (استوکاستیک RSI)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>نسخه حساس‌تر RSI</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور به بالای ۰.۲ از پایین</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور به زیر ۰.۸ از بالا</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-weight"></i>
+                    <h2>OBV (حجم تعادلی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور پیش‌بینی قیمت با حجم معاملات</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش OBV در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش OBV در روند نزولی</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-arrow-circle-up"></i>
+                    <h2>Aroon (آرون)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی شروع روندهای جدید</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> خط Aroon Up بالای ۷۰ و Aroon Down زیر ۳۰</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> خط Aroon Down بالای ۷۰ و Aroon Up زیر ۳۰</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-wave-pulse"></i>
+                    <h2>ATR (محدوده واقعی میانگین)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری نوسانات بازار</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش ناگهانی ATR پس از رکود</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش ATR پس از نوسانات شدید</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-bullseye"></i>
+                    <h2>Pivot Points (نقاط محوری)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>سطوح حمایت و مقاومت روزانه</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت به S1 یا S2 برسد و برگردد</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت به R1 یا R2 برسد و برگردد</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-pie"></i>
+                    <h2>VWAP (میانگین موزون حجمی قیمت)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>میانگین قیمت وزنی با حجم معاملات</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت بالای VWAP در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت زیر VWAP در روند نزولی</p>
+                </div>
+            </div>
+            
+            <!-- Indicators 21-30 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-magnet"></i>
+                    <h2>Williams %R (ویلیامز %R)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندیکاتور شناسایی نقاط اشباع</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> مقادیر زیر -۸۰</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> مقادیر بالای -۲۰</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-tint"></i>
+                    <h2>Chaikin Oscillator (نوسان‌ساز چایکین)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب قیمت و حجم برای شناسایی روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> خط از پایین خط صفر را قطع کند</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> خط از بالا خط صفر را قطع کند</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-satellite"></i>
+                    <h2>Keltner Channel (کانال کلتنر)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>کانال نوسانی بر اساس ATR</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت به کف کانال برسد</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت به سقف کانال برسد</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-fire"></i>
+                    <h2>Momentum (مومنتوم)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>سرعت تغییرات قیمت</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین به بالای خط ۱۰۰</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا به زیر خط ۱۰۰</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-snowflake"></i>
+                    <h2>Donchian Channel (کانال دانچیان)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی نقاط شکست روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت بالای سقف کانال</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت زیر کف کانال</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-bezier-curve"></i>
+                    <h2>ZigZag (زیگزاگ)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>فیلتر نوسانات جزئی و نمایش روند اصلی</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> تغییر جهت به سمت بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> تغییر جهت به سمت پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>ADL (خط توزیع انباشت)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب قیمت و حجم برای شناسایی روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش ADL در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش ADL در روند نزولی</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-rocket"></i>
+                    <h2>TRIX (تریپل اکسپوننشیال)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>فیلتر نوسانات جزئی برای شناسایی روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین به بالای خط صفر</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا به زیر خط صفر</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-sync-alt"></i>
+                    <h2>ROC (نرخ تغییرات)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>درصد تغییر قیمت نسبت به دوره گذشته</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین به بالای خط صفر</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا به زیر خط صفر</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-layer-group"></i>
+                    <h2>Gann Fan (پنکه گن)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>خطوط حمایت/مقاومت بر اساس زوایای ریاضی</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> برگشت از خطوط حمایتی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> برگشت از خطوط مقاومتی</p>
+                </div>
+            </div>
+            
+            <!-- Indicators 31-40 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-water"></i>
+                    <h2>Elder Ray (پرتوهای الدر)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب قدرت خریداران و فروشندگان</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> Bull Power مثبت و در حال افزایش</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> Bear Power منفی و در حال کاهش</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-bullhorn"></i>
+                    <h2>Ultimate Oscillator (نوسان‌ساز نهایی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب سه بازه زمانی مختلف</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین ۳۰ به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا ۷۰ به پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-cogs"></i>
+                    <h2>Coppock Curve (منحنی کوپاک)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی شروع روندهای صعودی بلندمدت</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین خط صفر به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا خط صفر به پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-thermometer-half"></i>
+                    <h2>Chande Momentum (مومنتوم چانده)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری قدرت روند فعلی</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین -۵۰ به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا ۵۰ به پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-podcast"></i>
+                    <h2>KST (نوسان‌ساز مجموع نرخ)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب چندین نوسان‌ساز مومنتوم</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور خط KST از پایین خط سیگنال</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور خط KST از بالا خط سیگنال</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-wrench"></i>
+                    <h2>Schaff Trend Cycle (چرخه روند شاف)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب MACD و استوکاستیک</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین ۲۵ به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا ۷۵ به پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-filter"></i>
+                    <h2>Detrended Price Oscillator (نوسان‌ساز بدون روند)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>حذف روند کلی برای شناسایی چرخه‌ها</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین خط صفر به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا خط صفر به پایین</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-cube"></i>
+                    <h2>Market Facilitation Index (شاخص تسهیل بازار)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>رابطه بین قیمت و حجم معاملات</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش قیمت با افزایش حجم</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش قیمت با افزایش حجم</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <h2>Ease of Movement (سهولت حرکت)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>رابطه بین قیمت و حجم برای حرکت قیمت</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> مقادیر مثبت و در حال افزایش</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> مقادیر منفی و در حال کاهش</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-brain"></i>
+                    <h2>Psychological Line (خط روانشناختی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>درصد دوره‌های صعودی نسبت به کل دوره</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از پایین ۳۰ به بالا</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا ۷۰ به پایین</p>
+                </div>
+            </div>
+            
+            <!-- Indicators 41-50 -->
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-torii-gate"></i>
+                    <h2>Kijun Sen (خط کیجون)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>میانگین بالاترین و پایین‌ترین قیمت ۲۶ دوره</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> قیمت بالای خط کیجون</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> قیمت زیر خط کیجون</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h2>Mass Index (شاخص جرم)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی نقاط برگشتی با فشردگی دامنه نوسان</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> عبور از بالا ۲۷ به پایین پس از قله</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> عبور از بالا ۲۷ به پایین پس از قله</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-network"></i>
+                    <h2>Elder Impulse System (سیستم ایمپالس الدر)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب MACD و EMA برای شناسایی جهت روند</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> میله سبز رنگ</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> میله قرمز رنگ</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-wave-triangle"></i>
+                    <h2>Gopalakrishnan Range Index (شاخص محدوده گوپالاکریشنان)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی روندها بر اساس محدوده نوسان</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> مقادیر بالای ۰.۵</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> مقادیر زیر ۰.۵</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-scatter"></i>
+                    <h2>Price Volume Trend (روند قیمت-حجم)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ترکیب تغییرات قیمت و حجم معاملات</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش PVT در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش PVT در روند نزولی</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-sliders-h"></i>
+                    <h2>Vertical Horizontal Filter (فیلتر عمودی-افقی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری میزان رونددار بودن بازار</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> مقادیر پایین (بازار رونددار)</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> مقادیر بالا (بازار بدون روند)</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-line-down"></i>
+                    <h2>Negative Volume Index (شاخص حجم منفی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی روند در روزهای با حجم پایین</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش NVI در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش NVI در روند نزولی</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-chart-line-up"></i>
+                    <h2>Positive Volume Index (شاخص حجم مثبت)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>شناسایی روند در روزهای با حجم بالا</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش PVI در روند صعودی</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش PVI در روند نزولی</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-ruler-vertical"></i>
+                    <h2>Standard Deviation (انحراف معیار)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>اندازه‌گیری نوسانات قیمت</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> افزایش ناگهانی پس از کاهش نوسانات</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> کاهش ناگهانی پس از افزایش نوسانات</p>
+                </div>
+            </div>
+            
+            <div class="indicator-card">
+                <div class="indicator-title">
+                    <i class="fas fa-infinity"></i>
+                    <h2>Relative Vigor Index (شاخص قدرت نسبی)</h2>
+                </div>
+                <div class="indicator-content">
+                    <p>ارتباط قیمت بسته شدن با دامنه نوسان</p>
+                    <p><span class="signal buy">سیگنال خرید:</span> خط RVI از پایین خط سیگنال را قطع کند</p>
+                    <p><span class="signal sell">سیگنال فروش:</span> خط RVI از بالا خط سیگنال را قطع کند</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
