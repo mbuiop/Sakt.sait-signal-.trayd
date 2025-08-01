@@ -19,39 +19,12 @@
             position: relative;
         }
 
-        /* Welcome message and management container */
-        .alert-container {
+        /* Welcome message */
+        .welcome-message {
             position: fixed;
             top: 20px;
             left: 20px;
             right: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        /* Management button styles */
-        .management-btn {
-            background: linear-gradient(145deg, #ffeb3b, #ffc107);
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 235, 59, 0.4);
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-        }
-
-        .management-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* Welcome message */
-        .welcome-message {
             color: #fff;
             font-size: 14px;
             background: rgba(0, 0, 0, 0.5);
@@ -59,6 +32,8 @@
             border-radius: 20px;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            z-index: 100;
         }
 
         /* Public message container */
@@ -95,80 +70,6 @@
             font-size: 24px;
             cursor: pointer;
             margin-right: 10px;
-        }
-
-        /* Modal styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.3);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 20px;
-            font-size: 22px;
-        }
-
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-family: inherit;
-            font-size: 16px;
-        }
-
-        .modal-content textarea {
-            height: 150px;
-        }
-
-        .modal-content button {
-            background: linear-gradient(145deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            margin: 5px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(255, 0, 0, 0.5) !important;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* Falling code from top */
@@ -486,20 +387,17 @@
     </style>
 </head>
 <body>
-    <!-- Alert container with management button and welcome message -->
-    <div class="alert-container">
-        <div class="welcome-message">
-            به پلتفرم یادگیری برنامه نویسی و کسب درآمد ترید و تحلیل تکنیکال خوش آمدید
-        </div>
-        <button class="management-btn" id="managementBtn">مدیریت</button>
+    <!-- Welcome message -->
+    <div class="welcome-message">
+        به پلتفرم یادگیری برنامه نویسی و کسب درآمد ترید و تحلیل تکنیکال خوش آمدید
     </div>
     
     <!-- Public message container (initially hidden) -->
     <div id="publicMessageContainer" class="public-message-container" style="display: none;">
         <div class="public-message">
             <span id="publicMessageText"></span>
-            <button class="close-message">&times;</button>
         </div>
+        <button class="close-message">&times;</button>
     </div>
 
     <div class="container">
@@ -536,9 +434,6 @@
     </div>
 
     <script>
-        // Password for management access
-        const MANAGEMENT_PASSWORD = "12345+!@#$%54321";
-        
         // Code snippets
         const codeSnippets = {
             python: [
@@ -690,94 +585,6 @@
             });
         });
 
-        // Show password modal
-        function showPasswordModal() {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3>ورود به بخش مدیریت</h3>
-                    <p>لطفا رمز عبور را وارد کنید:</p>
-                    <input type="password" id="adminPassword" autocomplete="off" />
-                    <button id="submitPassword">تایید</button>
-                    <button class="modal-close">×</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            // Focus on password input
-            setTimeout(() => {
-                document.getElementById('adminPassword').focus();
-            }, 100);
-
-            // Submit password
-            modal.querySelector('#submitPassword').addEventListener('click', function() {
-                const password = document.getElementById('adminPassword').value;
-                if (password === MANAGEMENT_PASSWORD) {
-                    modal.remove();
-                    showMessageModal();
-                } else {
-                    alert('رمز عبور اشتباه است');
-                }
-            });
-
-            // Close modal
-            modal.querySelector('.modal-close').addEventListener('click', function() {
-                modal.remove();
-            });
-            
-            // Close on click outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.remove();
-                }
-            });
-        }
-
-        // Show message modal
-        function showMessageModal() {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h3>ارسال پیام همگانی</h3>
-                    <p>پیام خود را برای نمایش به کاربران وارد کنید:</p>
-                    <textarea id="publicMessageInput" rows="5" placeholder="متن پیام ..."></textarea>
-                    <button id="sendPublicMessage">ارسال</button>
-                    <button class="modal-close">×</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            
-            // Focus on textarea
-            setTimeout(() => {
-                document.getElementById('publicMessageInput').focus();
-            }, 100);
-
-            // Send message
-            modal.querySelector('#sendPublicMessage').addEventListener('click', function() {
-                const message = document.getElementById('publicMessageInput').value;
-                if (message.trim() !== '') {
-                    displayPublicMessage(message);
-                    modal.remove();
-                } else {
-                    alert('لطفا پیام را وارد کنید');
-                }
-            });
-
-            // Close modal
-            modal.querySelector('.modal-close').addEventListener('click', function() {
-                modal.remove();
-            });
-            
-            // Close on click outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.remove();
-                }
-            });
-        }
-
         // Display public message on the page
         function displayPublicMessage(message) {
             const container = document.getElementById('publicMessageContainer');
@@ -808,8 +615,23 @@
                 setTimeout(createShiba, i * 700);
             }
             
-            // Add management button event listener
-            document.getElementById('managementBtn').addEventListener('click', showPasswordModal);
+            // Check for moder.html and display its content as public message
+            fetch('moder.html')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    throw new Error('File not found');
+                })
+                .then(text => {
+                    if (text.trim() !== '') {
+                        displayPublicMessage(text);
+                    }
+                })
+                .catch(error => {
+                    // File not found, do nothing
+                    console.log('No moder.html found');
+                });
         }
 
         // Start the app
