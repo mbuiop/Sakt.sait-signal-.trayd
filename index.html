@@ -70,6 +70,11 @@
             font-size: 24px;
             cursor: pointer;
             margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .close-message:hover {
+            transform: scale(1.2);
         }
 
         /* Falling code from top */
@@ -596,6 +601,9 @@
             // Add event listener for close button
             container.querySelector('.close-message').addEventListener('click', function() {
                 container.style.display = 'none';
+                
+                // Save the closed state in localStorage
+                localStorage.setItem('publicMessageClosed', 'true');
             });
         }
 
@@ -615,23 +623,29 @@
                 setTimeout(createShiba, i * 700);
             }
             
-            // Check for moder.html and display its content as public message
-            fetch('moder.html')
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    }
-                    throw new Error('File not found');
-                })
-                .then(text => {
-                    if (text.trim() !== '') {
-                        displayPublicMessage(text);
-                    }
-                })
-                .catch(error => {
-                    // File not found, do nothing
-                    console.log('No moder.html found');
-                });
+            // Check if user has already closed the public message
+            const messageClosed = localStorage.getItem('publicMessageClosed');
+            
+            // Only fetch moder.html if the message hasn't been closed
+            if (!messageClosed || messageClosed !== 'true') {
+                // Check for moder.html and display its content as public message
+                fetch('moder.html')
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        throw new Error('File not found');
+                    })
+                    .then(text => {
+                        if (text.trim() !== '') {
+                            displayPublicMessage(text);
+                        }
+                    })
+                    .catch(error => {
+                        // File not found, do nothing
+                        console.log('No moder.html found');
+                    });
+            }
         }
 
         // Start the app
